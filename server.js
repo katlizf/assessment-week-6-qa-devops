@@ -25,7 +25,7 @@ app.get('/api/robots', (req, res) => {
     try {
         res.status(200).send(botsArr)
     } catch (error) {
-        console.log('ERROR GETTING BOTS', error)
+        rollbar.error('ERROR GETTING BOTS', error)
         res.sendStatus(400)
     }
 })
@@ -37,7 +37,7 @@ app.get('/api/robots/five', (req, res) => {
         let compDuo = shuffled.slice(6, 8)
         res.status(200).send({choices, compDuo})
     } catch (error) {
-        console.log('ERROR GETTING FIVE BOTS', error)
+        rollbar.error('ERROR GETTING FIVE BOTS', error)
         res.sendStatus(400)
     }
 })
