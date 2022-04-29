@@ -13,6 +13,16 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/index.html'))
 })
 
+var Rollbar = require("rollbar");
+var rollbar = new Rollbar({
+  accessToken: '067f3d8eea4a4fc3a49fccccf02a096d',
+  captureUncaught: true,
+  captureUnhandledRejections: true
+});
+
+// record a generic message and send it to Rollbar
+rollbar.log("Hello world!");
+
 // app.get('/styles', (req, res) => {
 //     res.sendFile(path.join(__dirname, '../public/index.css'))
 // })
@@ -37,7 +47,7 @@ app.get('/api/robots/five', (req, res) => {
         let compDuo = shuffled.slice(6, 8)
         res.status(200).send({choices, compDuo})
     } catch (error) {
-        rollbar.error('ERROR GETTING FIVE BOTS', error)
+        rollbar.criticalerror('ERROR GETTING FIVE BOTS', error)
         res.sendStatus(400)
     }
 })
@@ -68,7 +78,7 @@ app.post('/api/duel', (req, res) => {
             res.status(200).send('You won!')
         }
     } catch (error) {
-        console.log('ERROR DUELING', error)
+        rollbar.warning('ERROR DUELING', error)
         res.sendStatus(400)
     }
 })
@@ -77,7 +87,7 @@ app.get('/api/player', (req, res) => {
     try {
         res.status(200).send(playerRecord)
     } catch (error) {
-        console.log('ERROR GETTING PLAYER STATS', error)
+        rollbar.error('ERROR GETTING PLAYER STATS', error)
         res.sendStatus(400)
     }
 })
